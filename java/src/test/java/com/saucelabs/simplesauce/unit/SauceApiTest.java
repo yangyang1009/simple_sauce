@@ -18,7 +18,7 @@ public class SauceApiTest extends BaseUnitTest {
         JavaScriptInvokerFactory.setJavaScriptExecutor(mockJSExecutor);
     }
     @Test
-    public void shouldRunExecuteStringMethodWithoutDefaultManagerSet() throws InvalidTestStatusException {
+    public void shouldRunExecuteStringMethodWithoutDefaultManagerSet() {
         sauceApi.setTestStatus("pass");
         verify(mockJSExecutor, times(1)).executeScript("sauce:job-result=pass");
     }
