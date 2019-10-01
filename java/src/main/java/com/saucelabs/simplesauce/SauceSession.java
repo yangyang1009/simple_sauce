@@ -26,7 +26,7 @@ public class SauceSession {
     private final RemoteDriverInterface remoteDriverImplementation;
     @Getter private WebDriver webDriver;
     @Getter @Setter private SauceOptions sauceOptions;
-    @Getter @Setter public final String sauceDataCenter = DataCenter.US_WEST;
+    @Getter @Setter public final String sauceDataCenter = DataCenter.RemoteUrls.US_WEST.address;
     private final EnvironmentManager environmentManager;
     public SauceTimeout timeouts = new SauceTimeout();
 
