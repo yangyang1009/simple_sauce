@@ -11,7 +11,7 @@ public class DataCenterTest
     @Test
     public void usWestDataCenterUrl_isCorrect()
     {
-        assertThat(DataCenter.USWest,
+        assertThat(DataCenter.US_WEST,
                 IsEqualIgnoringCase.equalToIgnoringCase("https://ondemand.saucelabs.com/wd/hub"));
     }
 }

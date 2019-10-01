@@ -32,7 +32,7 @@ public class SauceSessionTest {
 
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
-        String expectedDataCenterUrl = DataCenter.USWest;
+        String expectedDataCenterUrl = DataCenter.US_WEST;
         assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);
     }
     @Test
@@ -83,11 +83,7 @@ public class SauceSessionTest {
         String actualOs = fakeSauceSession.sauceSessionCapabilities.getPlatform().name();
         assertEquals("WIN10", actualOs);
     }
-    @Test
-    public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        boolean hasAccessKey = false; // fakeSauceSession.getSauceOptions().toString().contains("nope");
-        assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
-    }
+
     @Test
     @Ignore("Future enhancement")
     public void withOs_linux_allowsOnlyChromeOrFirefox()

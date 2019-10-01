@@ -21,12 +21,12 @@ public class SauceOptionsTest {
     }
 
     @Test
-    public void acceptsBrowserVersionBrowserNamePlatformName() {
-        sauceOptions = new SauceOptions("Firefox", "68.0", "macOS 10.13");
+    public void acceptBrowserName() {
+        sauceOptions = new SauceOptions("Firefox");
 
         assertEquals(sauceOptions.getBrowserName(), "Firefox");
-        assertEquals(sauceOptions.getBrowserVersion(), "68.0");
-        assertEquals(sauceOptions.getPlatformName(), "macOS 10.13");
+        assertEquals(sauceOptions.getBrowserVersion(), "latest");
+        assertEquals(sauceOptions.getPlatformName(), "Windows 10");
     }
 
     @Test

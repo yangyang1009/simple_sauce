@@ -7,12 +7,7 @@ import lombok.Setter;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 
@@ -22,20 +17,16 @@ public class SauceSession {
 	private String operatingSystem = "Windows 10";
 	private String browserName = "Chrome";
     private final String sauceOptionsTag = "sauce:options";
-    private ChromeOptions chromeOptions;
-    private FirefoxOptions firefoxOptions;
 
     private String browserVersion = "latest";
     public MutableCapabilities sauceSessionCapabilities;
-    private EdgeOptions edgeOptions;
-    private InternetExplorerOptions ieOptions;
 
     // goal is remove all members above this comment
 
     private final RemoteDriverInterface remoteDriverImplementation;
     @Getter private WebDriver webDriver;
     @Getter @Setter private SauceOptions sauceOptions;
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    @Getter @Setter public final String sauceDataCenter = DataCenter.US_WEST;
     private final EnvironmentManager environmentManager;
     public SauceTimeout timeouts = new SauceTimeout();
 
@@ -107,176 +98,4 @@ public class SauceSession {
         return checkIfEmpty(accessKey);
     }
 
-
-    // move all below methods into SauceOptions
-
-    //TODO this needs to be moved to it's own class because it keeps changing
-    private void setBrowserSpecificCapabilities(String browserName)
-    {
-        if (browserName.equalsIgnoreCase("Chrome"))
-        {
-            sauceSessionCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        }
-        else if (browserName.equalsIgnoreCase("Firefox"))
-        {
-            sauceSessionCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-        }
-        else if(browserName.equalsIgnoreCase("Safari"))
-        {
-            SafariOptions safariOptions = new SafariOptions();
-            sauceSessionCapabilities.setCapability(SafariOptions.CAPABILITY, safariOptions);
-        }
-        else if(browserName.equalsIgnoreCase("Edge"))
-        {
-            sauceSessionCapabilities.setCapability("Edge", edgeOptions);
-        }
-        else if(browserName.equalsIgnoreCase("IE"))
-        {
-            sauceSessionCapabilities.setCapability("se:ieOptions", ieOptions);
-        }
-        else {
-            throw new IllegalArgumentException("The browser=>" + browserName + " that you passed in is not a valid option.");
-        }
-    }
-
-	public SauceSession withChrome()
-	{
-	    chromeOptions = new ChromeOptions();
-		chromeOptions.setExperimentalOption("w3c", true);
-		browserName = "Chrome";
-		return this;
-	}
-
-    public SauceSession withSafari(String version)
-    {
-        //TODO: I did this but I hate it :(
-        //I wish I could just have a default value set for the version param
-        if(version.equalsIgnoreCase(""))
-            version = "latest";
-        browserName = "safari";
-        this.browserVersion = version;
-        return this;
-    }
-    public SauceSession withSafari()
-    {
-        return withMacOsMojave();
-    }
-
-    public SauceSession withFirefox()
-	{
-		browserName = "Firefox";
-		return this;
-	}
-
-    public SauceSession withMacOsMojave() {
-        operatingSystem = "macOS 10.14";
-        browserName = "safari";
-        browserVersion = "12.0";
-        return this;
-    }
-    public SauceSession withMacOsHighSierra()
-    {
-        this.operatingSystem = "macOS 10.13";
-        browserName = "Safari";
-        return this;
-    }
-
-    public SauceSession withEdge() {
-        this.browserName = "Edge";
-        edgeOptions = new EdgeOptions();
-        return this;
-    }
-
-    public SauceSession withIE(String version) {
-        this.browserName = "IE";
-        this.browserVersion = version;
-        ieOptions = new InternetExplorerOptions();
-        return this;
-    }
-
-    public SauceSession withPlatform(String operatingSystem) {
-        this.operatingSystem = operatingSystem;
-        return this;
-    }
-
-    public SauceSession withMacOsSierra() {
-        this.operatingSystem = "macOS 10.12";
-        browserName = "Safari";
-        return this;
-    }
-
-    public SauceSession withMacOsXElCapitan() {
-        this.operatingSystem = "OS X 10.11";
-        browserName = "Safari";
-        return this;
-    }
-
-    public SauceSession withMacOsXYosemite() {
-        this.operatingSystem = "OS X 10.10";
-        browserName = "Safari";
-        return this;
-    }
-    //TODO notice the duplication below with edge.
-    //Maybe could be moved to a separate class so we can do withEdge().16_16299();
-    //Or withEdge().version(EdgeVersion.16_16299);
-    public SauceSession withEdge16_16299() {
-        browserName = "Edge";
-        browserVersion = "16.16299";
-        return this;
-    }
-
-    public SauceSession withEdge15_15063() {
-        browserName = "Edge";
-        browserVersion = "15.15063";
-        return this;
-    }
-
-    public SauceSession withEdge14_14393() {
-        browserName = "Edge";
-        browserVersion = "14.14393";
-        return this;
-    }
-
-    public SauceSession withEdge13_10586() {
-        browserName = "Edge";
-        browserVersion = "13.10586";
-        return this;
-    }
-
-    public SauceSession withEdge17_17134() {
-        browserName = "Edge";
-        browserVersion = "17.17134";
-        return this;
-    }
-
-    public SauceSession withEdge18_17763() {
-        browserName = "Edge";
-        browserVersion = "18.17763";
-        return this;
-    }
-
-    public SauceSession withWindows10() {
-        operatingSystem = "Windows 10";
-        return this;
-    }
-
-    public SauceSession withWindows8_1() {
-        operatingSystem = "Windows 8.1";
-        return this;
-    }
-
-    public SauceSession withWindows8() {
-        operatingSystem = "Windows 8";
-        return this;
-    }
-
-    public SauceSession withWindows7() {
-        operatingSystem = "Windows 7";
-        return this;
-    }
-
-    public SauceSession withLinux() {
-        operatingSystem = "Linux";
-        return this;
-    }
 }
