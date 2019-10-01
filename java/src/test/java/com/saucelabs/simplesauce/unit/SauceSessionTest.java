@@ -85,7 +85,7 @@ public class SauceSessionTest {
     }
     @Test
     public void sauceOptions_defaultConfiguration_setsSauceOptions() {
-        boolean hasAccessKey = fakeSauceSession.getSauceOptionsCapability().asMap().containsKey("accessKey");
+        boolean hasAccessKey = false; // fakeSauceSession.getSauceOptions().toString().contains("nope");
         assertTrue("You need to have Sauce Credentials set (SAUCE_USERNAME, SAUCE_ACCESSKEY) before this unit test will pass", hasAccessKey);
     }
     @Test

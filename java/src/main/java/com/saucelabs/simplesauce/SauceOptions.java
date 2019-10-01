@@ -11,7 +11,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class SauceOptions {
+public class SauceOptions extends MutableCapabilities {
 
     private final String sauceOptionsTag = "sauce:options";
 

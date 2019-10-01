@@ -17,9 +17,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import java.net.MalformedURLException;
 
 public class SauceSession {
-    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
-    private final EnvironmentManager environmentManager;
-    public SauceTimeout timeouts = new SauceTimeout();
 
     //todo there is some weird bug when this is set to Linux, the session can't be started
 	private String operatingSystem = "Windows 10";
@@ -27,32 +24,43 @@ public class SauceSession {
     private final String sauceOptionsTag = "sauce:options";
     private ChromeOptions chromeOptions;
     private FirefoxOptions firefoxOptions;
-    private MutableCapabilities sauceOptions;
+
     private String browserVersion = "latest";
     public MutableCapabilities sauceSessionCapabilities;
-    private final RemoteDriverInterface remoteDriverImplementation;
-
-    private WebDriver webDriver;
     private EdgeOptions edgeOptions;
     private InternetExplorerOptions ieOptions;
+
+    // goal is remove all members above this comment
+
+    private final RemoteDriverInterface remoteDriverImplementation;
+    @Getter private WebDriver webDriver;
+    @Getter @Setter private SauceOptions sauceOptions;
+    @Getter @Setter public final String sauceDataCenter = DataCenter.USWest;
+    private final EnvironmentManager environmentManager;
+    public SauceTimeout timeouts = new SauceTimeout();
+
     @Getter @Setter public String sauceLabsUrl;
 
     public SauceSession() {
-        sauceSessionCapabilities = new MutableCapabilities();
+        sauceSessionCapabilities = new SauceOptions();
         remoteDriverImplementation = new ConcreteRemoteDriver();
         environmentManager = new ConcreteSystemManager();
     }
 
     public SauceSession(RemoteDriverInterface remoteManager, EnvironmentManager environmentManager) {
         remoteDriverImplementation = remoteManager;
-        sauceSessionCapabilities = new MutableCapabilities();
+        sauceSessionCapabilities = new SauceOptions();
         this.environmentManager = environmentManager;
     }
 
+    public SauceSession(MutableCapabilities options){
+        sauceSessionCapabilities = options;
+        remoteDriverImplementation = new ConcreteRemoteDriver();
+        environmentManager = new ConcreteSystemManager();
+    }
+
     public WebDriver start() {
-        sauceOptions = setSauceOptions();
-        setBrowserSpecificCapabilities(browserName);
-        sauceSessionCapabilities = setRemoteDriverCapabilities(sauceOptions);
+        sauceSessionCapabilities = setRemoteDriverCapabilities(this.sauceOptions);
         sauceLabsUrl = sauceDataCenter;
         try
         {
@@ -65,6 +73,12 @@ public class SauceSession {
         return this.webDriver;
 	}
 
+    public void stop()
+    {
+        if(webDriver != null)
+            webDriver.quit();
+    }
+
     private MutableCapabilities setRemoteDriverCapabilities(MutableCapabilities sauceOptions) {
         sauceSessionCapabilities.setCapability(sauceOptionsTag, sauceOptions);
         sauceSessionCapabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
@@ -73,16 +87,28 @@ public class SauceSession {
         return sauceSessionCapabilities;
     }
 
-    private MutableCapabilities setSauceOptions() {
-        sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("username", getUserName());
-        sauceOptions.setCapability("accessKey", getAccessKey());
-        if(timeouts.getCommandTimeout() != 0)
-            sauceOptions.setCapability("commandTimeout", timeouts.getCommandTimeout());
-        if(timeouts.getIdleTimeout() != 0)
-            sauceOptions.setCapability("idleTimeout", timeouts.getIdleTimeout());
-        return sauceOptions;
+    public RemoteDriverInterface getDriverManager() {
+        return remoteDriverImplementation;
     }
+
+    private String checkIfEmpty(String variableToCheck) {
+        if (variableToCheck == null)
+            throw new SauceEnvironmentVariablesNotSetException();
+        return variableToCheck;
+    }
+
+    public String getUserName() throws SauceEnvironmentVariablesNotSetException{
+        String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
+        return checkIfEmpty(userName);
+    }
+
+    public String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
+        String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
+        return checkIfEmpty(accessKey);
+    }
+
+
+    // move all below methods into SauceOptions
 
     //TODO this needs to be moved to it's own class because it keeps changing
     private void setBrowserSpecificCapabilities(String browserName)
@@ -142,16 +168,6 @@ public class SauceSession {
 		return this;
 	}
 
-    public RemoteDriverInterface getDriverManager() {
-        return remoteDriverImplementation;
-    }
-    public MutableCapabilities getSauceOptionsCapability(){
-        return ((MutableCapabilities) sauceSessionCapabilities.getCapability(sauceOptionsTag));
-    }
-    public WebDriver getDriver() {
-        return webDriver;
-    }
-
     public SauceSession withMacOsMojave() {
         operatingSystem = "macOS 10.14";
         browserName = "safari";
@@ -181,29 +197,6 @@ public class SauceSession {
     public SauceSession withPlatform(String operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
-    }
-
-
-    public void stop()
-    {
-        if(webDriver != null)
-            webDriver.quit();
-    }
-
-    public String getUserName() throws SauceEnvironmentVariablesNotSetException{
-        String userName = environmentManager.getEnvironmentVariable("SAUCE_USERNAME");
-        return checkIfEmpty(userName);
-    }
-
-    private String checkIfEmpty(String variableToCheck) {
-        if (variableToCheck == null)
-            throw new SauceEnvironmentVariablesNotSetException();
-        return variableToCheck;
-    }
-
-    public String getAccessKey() throws SauceEnvironmentVariablesNotSetException {
-        String accessKey = environmentManager.getEnvironmentVariable("SAUCE_ACCESS_KEY");
-        return checkIfEmpty(accessKey);
     }
 
     public SauceSession withMacOsSierra() {

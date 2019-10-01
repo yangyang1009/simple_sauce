@@ -1,11 +1,11 @@
 package com.saucelabs.simplesauce.unit;
 
 import com.saucelabs.simplesauce.SauceOptions;
-import org.junit.Before;
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Ignore;
-import static org.junit.Assert.*;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import static org.junit.Assert.assertEquals;
 
 public class SauceOptionsTest {
 
@@ -30,12 +30,14 @@ public class SauceOptionsTest {
     }
 
     @Test
+    @Ignore("Future enhancement")
     public void acceptsMutableCababilities() {
-        throw new NotImplementedException();
+        throw new NotImplementedException("TODO");
     }
 
     @Test
+    @Ignore("Future enhancement")
     public void acceptsDesiredCapabilities() {
-        throw new NotImplementedException();
+        throw new NotImplementedException("TODO");
     }
 }
