@@ -14,6 +14,8 @@ public class SauceOptionsTest {
     public void defaultValues(){
         sauceOptions = new SauceOptions();
 
-        assertEquals(sauceOptions.getBrowserName(), "chrome");
+        assertEquals(sauceOptions.getBrowserName(), "Chrome");
+        assertEquals(sauceOptions.getBrowserVersion(), "latest");
+        assertEquals(sauceOptions.getPlatformName(), "Windows 10");
     }
 }
