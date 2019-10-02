@@ -33,7 +33,7 @@ public class SauceSessionTest {
     @Test
     public void startSession_defaultConfig_usWestDataCenter() {
         String expectedDataCenterUrl = DataCenter.RemoteUrls.US_WEST.address;
-        assertEquals(expectedDataCenterUrl, fakeSauceSession.sauceDataCenter);
+        assertEquals(expectedDataCenterUrl, fakeSauceSession.getSauceDataCenter());
     }
     @Test
     public void getUserName_usernameSetInEnvironmentVariable_returnsValue()  {
