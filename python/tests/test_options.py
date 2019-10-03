@@ -14,9 +14,9 @@ class TestInit(object):
         assert sauce.platformName == 'windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions('Firefox', '67.0', 'windows 10')
+        sauce = SauceOptions(browserName='Firefox', browserVersion='67.0', platformName='windows 10')
 
-        assert sauce.browserName == 'Firefox'
+        assert sauce.browserName == 'firefox'
         assert sauce.browserVersion == '67.0'
         assert sauce.platformName == 'windows 10'
 

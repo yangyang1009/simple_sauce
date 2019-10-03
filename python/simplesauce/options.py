@@ -3,26 +3,34 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver import DesiredCapabilities
 
 
+SUPPORTED_BROWSERS = ['chrome', 'firefox', 'internet explorer', 'safari', 'edge']
+
 class SauceOptions():
 
     def _set_defaults(self, browser=None):
-        self.browserName = browser if browser else 'chrome'
+        if not browser:
+            self.browserName = 'chrome'
+        else:
+            browser = browser.lower()
+            self.browserName = browser if browser in SUPPORTED_BROWSERS else None
+        
         self.browserVersion = 'latest'
-        self.platformName = 'windows 10'
+        self.platformName = 'macos 10.14' if self.browserName == 'safari' else 'windows 10'
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
 
         if not any([browserName, browserVersion, platformName, options]):
             self._set_defaults()
             return
-        elif not any([browserName, browserVersion, platformName]):
+        elif not any([browserVersion, platformName, options]):
+            self._set_defaults(browserName)
+        elif options:
             self.parseOptions(options)
-            return
-
-        self.browserName = browserName
-        self.browserVersion = browserVersion
-        self.platformName = platformName
-
+        else:
+            self.browserName = 'chrome'
+            self.browserVersion = browserVersion
+            self.platformName = 'windows 10'
+            
     def parseOptions(self, options):
 
         if type(options) == ChromeOptions:
