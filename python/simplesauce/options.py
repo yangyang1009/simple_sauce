@@ -13,11 +13,11 @@ class SauceOptions():
         self.browserVersion = 'latest'
         self.platformName = 'windows 10'
 
-    def _setMacVersions(self, version, platform):
+    def _setMacVersions(self, version=None, platform=None):
         # TODO: logic to associate correct browser versions with OS versions
         self.browserName = 'safari'
-        self.browserVersion = '12'
-        self.platformName = 'macos 10.14'
+        self.browserVersion = '12' if version else 'latest'
+        self.platformName = platform if platform else 'macos 10.14'
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
         self._set_defaults()
@@ -32,7 +32,7 @@ class SauceOptions():
         if browserVersion:
             self.browserVersion = browserVersion
 
-        if platformName:
+        if platformName or browserName == 'safari':
             if browserName == 'safari':
                 self._setMacVersions(browserVersion, platformName)
             else:
