@@ -4,33 +4,43 @@ from selenium.webdriver import DesiredCapabilities
 
 
 SUPPORTED_BROWSERS = ['chrome', 'firefox', 'internet explorer', 'safari', 'edge']
+WINDOWS_PLATFORMS = ['windows 7', 'windows 8.1', 'windows 10']
 
 class SauceOptions():
 
-    def _set_defaults(self, browser=None):
-        if not browser:
-            self.browserName = 'chrome'
-        else:
-            browser = browser.lower()
-            self.browserName = browser if browser in SUPPORTED_BROWSERS else None
-        
+    def _set_defaults(self):
+        self.browserName = 'chrome'
         self.browserVersion = 'latest'
-        self.platformName = 'macos 10.14' if self.browserName == 'safari' else 'windows 10'
+        self.platformName = 'windows 10'
+
+    def _setMacVersions(self, version, platform):
+        # TODO: logic to associate correct browser versions with OS versions
+        self.browserName = 'safari'
+        self.browserVersion = '12'
+        self.platformName = 'macos 10.14'
 
     def __init__(self, browserName=None, browserVersion=None, platformName=None, options={}):
+        self._set_defaults()
 
-        if not any([browserName, browserVersion, platformName, options]):
-            self._set_defaults()
-            return
-        elif not any([browserVersion, platformName, options]):
-            self._set_defaults(browserName)
-        elif options:
-            self.parseOptions(options)
-        else:
-            self.browserName = 'chrome'
-            self.browserVersion = browserVersion
-            self.platformName = 'windows 10'
+        if browserName:
+            browserName = browserName.lower()
+            if browserName in SUPPORTED_BROWSERS:
+                self.browserName = browserName
+            else: 
+                raise KeyError("Invalid browser name, please use on of the following: {}".format(SUPPORTED_BROWSERS))
             
+        if browserVersion:
+            self.browserVersion = browserVersion
+
+        if platformName:
+            if browserName == 'safari':
+                self._setMacVersions(browserVersion, platformName)
+            else:
+                self.platformName = platformName
+
+        if options:
+            self.parseOptions(options)
+
     def parseOptions(self, options):
 
         if type(options) == ChromeOptions:

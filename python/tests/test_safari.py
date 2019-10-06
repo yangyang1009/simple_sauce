@@ -8,4 +8,4 @@ class TestSafariOptions(object):
 
         assert sauce.browserName == 'safari'
         assert sauce.browserVersion == 'latest'
-        assert sauce.platformName == 'macOS 10.14'
+        assert sauce.platformName == 'macos 10.14'

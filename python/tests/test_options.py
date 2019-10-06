@@ -14,11 +14,17 @@ class TestInit(object):
         assert sauce.platformName == 'windows 10'
 
     def test_accepts_browser_version_platform_name(self):
-        sauce = SauceOptions(browserName='Firefox', browserVersion='67.0', platformName='windows 10')
+        sauce = SauceOptions(browserName='Firefox')
 
         assert sauce.browserName == 'firefox'
-        assert sauce.browserVersion == '67.0'
+        assert sauce.browserVersion == 'latest'
         assert sauce.platformName == 'windows 10'
+
+        sauce2 = SauceOptions(browserName='Firefox', browserVersion='67.0', platformName='macos 10.14')
+
+        assert sauce2.browserName == 'firefox'
+        assert sauce2.browserVersion == '67.0'
+        assert sauce2.platformName == 'macos 10.14'
 
     def test_accepts_w3c_values(self):
         options = {

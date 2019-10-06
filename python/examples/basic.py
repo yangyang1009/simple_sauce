@@ -3,9 +3,11 @@
 Here we start a session on Sauce, perform some actions then close the session.
 """
 from simplesauce.session import SauceSession
+from simplesauce.options import SauceOptions
 
+options = SauceOptions("safari")
 
-session = SauceSession()
+session = SauceSession(options=options)
 
 session.start()
 session.driver.get("https://www.saucedemo.com")
