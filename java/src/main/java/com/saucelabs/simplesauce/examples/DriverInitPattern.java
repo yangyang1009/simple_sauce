@@ -35,7 +35,7 @@ public class DriverInitPattern {
      */
     @After
     public void tearDown() {
-        driver.quit();
+        sauce.getWebDriver().quit();
     }
 
     /**
@@ -45,7 +45,7 @@ public class DriverInitPattern {
     public void withPageObject(){
         MyPageObject page = new MyPageObject(driver);
 
-        sauce.sendSauceLogging(driver, "Logging in");
+        sauce.sendSauceLogging("Logging in");
         page.login();
 
         Assert.assertTrue(page.loginSuccessfully());
@@ -59,7 +59,7 @@ public class DriverInitPattern {
     public void withDriverDirectly() {
         driver.get("https://www.saucedemo.com");
 
-        sauce.sendSauceLogging(driver, "Getting title");
+        sauce.sendSauceLogging("Getting title");
         String actual = driver.getTitle();
 
         Assert.assertEquals(actual, "Swag Labs");
