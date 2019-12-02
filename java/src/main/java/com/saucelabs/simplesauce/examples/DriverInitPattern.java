@@ -12,6 +12,7 @@ import org.openqa.selenium.remote.BrowserType;
 public class DriverInitPattern {
 
     private WebDriver driver;
+    private SauceSession sauce;
 
     /**
      * Use Simple Sauce here, in the Before hook
@@ -25,12 +26,12 @@ public class DriverInitPattern {
         options.setBrowserVersion("latest");
 
         // create a session and then use the driver in a typical way
-        SauceSession sauce = new SauceSession(options);
+        sauce = new SauceSession(options);
         driver = sauce.start();
     }
 
     /**
-     * No further usage of the SauceOptions/SauceSession object
+     * Use Sauce session only as related to Sauce functionality
      */
     @After
     public void tearDown() {
@@ -44,6 +45,7 @@ public class DriverInitPattern {
     public void withPageObject(){
         MyPageObject page = new MyPageObject(driver);
 
+        sauce.sendSauceLogging(driver, "Logging in");
         page.login();
 
         Assert.assertTrue(page.loginSuccessfully());
@@ -57,6 +59,7 @@ public class DriverInitPattern {
     public void withDriverDirectly() {
         driver.get("https://www.saucedemo.com");
 
+        sauce.sendSauceLogging(driver, "Getting title");
         String actual = driver.getTitle();
 
         Assert.assertEquals(actual, "Swag Labs");

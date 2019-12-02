@@ -43,6 +43,7 @@ public class UseThroughoutPattern {
     public void withPageObject(){
         MyPageObject page = new MyPageObject(sauce.getWebDriver());
 
+        sauce.sendSauceLogging("Logging in");
         page.login();
 
         Assert.assertTrue(page.loginSuccessfully());
@@ -56,6 +57,7 @@ public class UseThroughoutPattern {
     public void withDriverDirectly() {
         sauce.getWebDriver().get("https://www.saucedemo.com");
 
+        sauce.sendSauceLogging("Getting title");
         String actual = sauce.getWebDriver().getTitle();
 
         Assert.assertEquals(actual, "Swag Labs");

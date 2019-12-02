@@ -4,6 +4,7 @@ import com.saucelabs.simplesauce.interfaces.EnvironmentManager;
 import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import lombok.Getter;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -144,6 +145,14 @@ public class SauceSession {
     public void stop() {
         if(webDriver !=null)
             webDriver.quit();
+    }
+
+    public void sendSauceLogging(String message){
+        sendSauceLogging(this.webDriver, message);
+    }
+
+    public void sendSauceLogging(WebDriver driver, String message){
+        ((JavascriptExecutor)driver).executeScript("sauce:context="+ message);
     }
 
     public String getUserName() throws SauceEnvironmentVariablesNotSetException{
