@@ -15,6 +15,8 @@ public class SauceOptions {
     @Getter @Setter public String operatingSystem = "Windows 10";
     @Getter public  ChromeOptions chromeOptions;
 
+    @Getter @Setter private String buildName;
+
     public SauceOptions withChrome()
     {
         chromeOptions = new ChromeOptions();
