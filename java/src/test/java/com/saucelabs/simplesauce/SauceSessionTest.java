@@ -5,6 +5,7 @@ import com.saucelabs.simplesauce.interfaces.SauceRemoteDriver;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.*;
@@ -127,5 +128,15 @@ public class SauceSessionTest {
         sauce.stop();
 
         verify(mockDriver).quit();
+    }
+
+    @Test
+    public void testName_canBeSet() {
+        String expectedTestName = "sampleTestName";
+        sauce = new SauceSession(dummyRemoteDriver, dummyEnvironmentManager);
+        sauce.setTestName(expectedTestName);
+        sauce.start();
+        MutableCapabilities capsSetInSauceSession = sauce.getSauceOptionsCapability();
+        assertEquals(expectedTestName, capsSetInSauceSession.getCapability("name"));
     }
 }

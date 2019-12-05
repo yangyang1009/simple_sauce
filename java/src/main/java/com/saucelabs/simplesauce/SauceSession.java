@@ -28,6 +28,7 @@ public class SauceSession {
     public MutableCapabilities currentSessionCapabilities;
     private final SauceRemoteDriver remoteDriverImplementation;
     @Getter private WebDriver webDriver;
+    @Getter String testName;
 
     public SauceRemoteDriver getDriverManager() {
         return remoteDriverImplementation;
@@ -65,7 +66,7 @@ public class SauceSession {
     }
 
     public WebDriver start() {
-        //TODO this might be the same as sauceCapabilities
+        //TODO this needs to be moved to SauceOptions as it belongs there
         mutableCapabilities = appendSauceCapabilities();
         setBrowserSpecificCapabilities(sauceOptions.browser);
         currentSessionCapabilities = setRemoteDriverCapabilities(mutableCapabilities);
@@ -73,8 +74,6 @@ public class SauceSession {
         tryToCreateRemoteWebDriver(sauceLabsUrl);
         return webDriver;
 	}
-
-
 
     private MutableCapabilities appendSauceCapabilities() {
         mutableCapabilities = new MutableCapabilities();
@@ -157,5 +156,7 @@ public class SauceSession {
         return checkIfEmpty(accessKey);
     }
 
-
+    public void setTestName(String testName) {
+        currentSessionCapabilities.setCapability("name", testName);
+    }
 }
