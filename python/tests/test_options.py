@@ -338,7 +338,7 @@ class TestSettingSpecificOptions(object):
 class TestAddingCapabilities(object):
 
     def test_setting_capabilities(self):
-        file_location = r'./tests/options.yml' 
+        file_location = r'./tests/options.yml'
         #  file_location = r'options.yml'  # If running locally
         with open(file_location) as file:
             yml = yaml.safe_load(file)
