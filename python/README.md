@@ -1,13 +1,13 @@
-# Simple Sauce - Python Bindings
+# Sauce Labs Python Bindings
 
-Hello, welcome to the Simple Sauce Python bindings! Let's make using Sauce Labs Simple!
+Hello, welcome to the Sauce Python bindings! Let's make using Sauce Labs Simple!
 
 ## Example Usage
 
-The goal of Simple Sauce is to provide a straightforward approach to connecting your automated scripts to Sauce. Here's a barebones example. Simple Sauce can be used like this:
+The goal of the Sauce bindings is to provide a straightforward approach to connecting your automated scripts to Sauce. Here's an example. The Sauce Python bindings can be used like this:
 
 ```
-from simplesauce.session import SauceSession
+from saucebindings.session import SauceSession
 
 session = SauceSession()
 
@@ -24,12 +24,12 @@ Set your Sauce username and Sauce access key as [environment variables](https://
 
 Clone this project to build from source
 ```
-git clone https://github.com/saucelabs/simple_sauce
+git clone https://github.com/saucelabs/sauce_bindings
 python setup.py install
 ```
 or install from [pip](https://pip.pypa.io/en/stable/):
 ```
-pip install simplesauce
+pip install saucebindings
 ```
 
 ## Development
